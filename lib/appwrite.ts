@@ -71,21 +71,31 @@ export async function logout(){
 }
 
 
-export async function getUser(){
+export async function getCurrentUser(){
     try{
         const response = await account.get();
 
         if(response.$id){
-            const userAvatar = await avatars.getInitials(response.name);
-
-            return {
-                ...response,
-                avatar: userAvatar,
+            try {
+                console.log("Generating initials for user:", response.name);
+                const userAvatar = await avatars.getInitials(response.name);
+                console.log("Generated avatar URL:", userAvatar);
+                
+                return {
+                    ...response,
+                    avatar: userAvatar,
+                }
+            } catch (avatarError) {
+                console.error("Error generating initials:", avatarError);
+                return {
+                    ...response,
+                    avatar: null,
+                }
             }
         } 
     }
     catch(error){
-        console.error(error);
+        console.error("Error getting current user:", error);
         return null;
     }
 }
