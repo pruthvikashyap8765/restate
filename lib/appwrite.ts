@@ -1,6 +1,9 @@
-import { Avatars, Client, Account } from 'react-native-appwrite';
+import { Avatars, Client, Account,OAuthProvider } from 'react-native-appwrite';
 import * as Linking from 'expo-linking';
 import { openAuthSessionAsync } from 'expo-web-browser';
+
+
+
 export const config ={
     platform : 'com.jsm.restate',
     endpoint : process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -22,8 +25,8 @@ export async function login(){
     try {
         const redirectUri = Linking.createURL('/');
 
-        const response = await account.createOAuth2URL(
-            OAuth2.Provider.Google,
+        const response = await account.createOAuth2Token(
+            OAuthProvider.Google,
             redirectUri,
         )
 
