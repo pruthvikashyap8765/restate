@@ -76,26 +76,16 @@ export async function getCurrentUser(){
         const response = await account.get();
 
         if(response.$id){
-            try {
-                console.log("Generating initials for user:", response.name);
-                const userAvatar = await avatars.getInitials(response.name);
-                console.log("Generated avatar URL:", userAvatar);
-                
-                return {
-                    ...response,
-                    avatar: userAvatar,
-                }
-            } catch (avatarError) {
-                console.error("Error generating initials:", avatarError);
-                return {
-                    ...response,
-                    avatar: null,
-                }
+            const userAvatar = await avatars.getInitials(response.name);
+
+            return {
+                ...response,
+                avatar: userAvatar,
             }
         } 
     }
     catch(error){
-        console.error("Error getting current user:", error);
+        console.error(error);
         return null;
     }
 }
